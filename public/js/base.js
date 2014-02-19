@@ -18,8 +18,7 @@ $(document).ready(function() {
       contentEffects();
   });
   $('.show-commend').live('click',function(){
-    var ds_loaded = false;
-    window.disqus_shortname = 'suyan-zh';
+    var disqus_shortname = 'jessiejia';
     $.ajax({
       type: "GET",
       url: "http://" + disqus_shortname + ".disqus.com/embed.js",
