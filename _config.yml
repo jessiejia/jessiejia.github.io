@@ -1,0 +1,4 @@
+permalink: /:year/:month/:day/:title.html
+paginate: 10
+title: Jessie's House 
+
