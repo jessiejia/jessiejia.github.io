@@ -10,6 +10,7 @@ tags: Jekyll github-page
 ### 用github的page搭建个人主页(很详细的哦～)
 ```http://pages.github.com/```
 
+<!--more-->
 
 #### 目录结构：
 - `_includes` 可以在模板中随时包含的文件
