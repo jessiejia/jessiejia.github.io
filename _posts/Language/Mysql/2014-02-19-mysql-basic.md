@@ -5,7 +5,7 @@ category: 语言
 tags: mysql
 ---
 
-#### 权限
+### 权限
 ```
 mysql> show grants for solrcloud_log_db;
 +----------------------------------------------------------------------------------------------------------------+
@@ -14,9 +14,8 @@ mysql> show grants for solrcloud_log_db;
 | GRANT FILE ON *.* TO 'solrcloud_log_db'@'%' IDENTIFIED BY PASSWORD '*1A08DCA365BB79E06C75554C263B027EFFBC0B6E' | 
 | GRANT ALL PRIVILEGES ON `solrcloud_log_db`.* TO 'solrcloud_log_db'@'%'                                         | 
 +----------------------------------------------------------------------------------------------------------------+
-``` 
-
-#### 字符集
+```
+### 字符集
 ##### 默认安装后为latin1,要手工设置为utf8 查看当前客户端的字符集mysql --help;
 ```
 修改方式修改my.cnf或my.ini,然后重启mysql
@@ -57,15 +56,12 @@ mysql> show variables like 'collation%';
 +----------------------+-----------------+
 ```
 ##### 指定字符集：
-* mysql --default-character-set=utf8 -h** -u** -p** **
+* mysql --default-character-set=utf8 -h** -u** -p** tablename
 * mysqldump --default-character-set=utf8 --lock-tables=0 --no-create-info -h** -u** -p** -B ** > sql.sql
 
 
 
-
-
-
-#### sql语法
+### SQL语法
 
 ##### mysqldump
 ```

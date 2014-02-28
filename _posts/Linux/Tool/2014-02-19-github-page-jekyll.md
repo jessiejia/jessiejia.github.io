@@ -33,8 +33,8 @@ jekyll serve  --watch --port 4000   # --watch修改后无需重启立即生效 -
 [更多>>](http://jekyllrb.com/docs/configuration/)
 
 
-#### 评论模块(disqus)
-先得有个disqus帐号，然后[Add Disqus to your site](http://disqus.com/admin/create/),由于我使用的是github-page的博客，所以'Choose your platform'选择'Universal Code'将给你的代码帖到你的代码里
+#### 评论模块(使用第三方的disqus)
+先得有个disqus帐号，然后[Add Disqus to your site](http://disqus.com/admin/create/),由于我使用的是github-page的博客，所以'Choose your platform'选择'Universal Code'将给你的代码帖到你的代码里,如：
 ```
     <div id="disqus_thread"></div>
     <script type="text/javascript">
@@ -52,7 +52,66 @@ jekyll serve  --watch --port 4000   # --watch修改后无需重启立即生效 -
     <a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
 ```
 
-
+-----------------------
 #### markdown语法
-##### 插入图片
-图片放在`/public/upload`下，插入图片时`![xxx](/public/upload/xxx)`就可以了。
+
+# 标题
+## 标题
+### 标题
+#### 标题
+##### 标题
+###### 标题
+正文
+
+
+*强调*
+**加粗**
+    
+    代码段落
+    代码
+
+
+    代码
+
+
+`代码`
+``代码``
+```代码```
+
+`
+代码
+`
+```
+#
+.
+:
++
+|
+```
+
+* 列表
+    * 列表
+    * 列表
+
+1. 列表
+    - 列表
+1. 列表    
+
+
+
+> 引用
+>> 嵌套
+
+
+[链接](http://zh.wikipedia.com/wiki/Markdown)
+
+
+回车
+回车
+
+回车
+
+
+回车
+
+插入图片:图片放在`/public/upload`下，插入图片时`![xxx](/public/upload/xxx)`就可以了。
