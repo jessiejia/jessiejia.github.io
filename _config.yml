@@ -2,6 +2,3 @@ permalink: /:year/:month/:day/:title.html
 paginate: 10
 title: Jessie's House 
 
-watch: true
-port: 4000
-
