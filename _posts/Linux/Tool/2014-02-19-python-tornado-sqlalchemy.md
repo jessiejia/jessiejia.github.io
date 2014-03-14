@@ -1,7 +1,7 @@
 ---
 layout: post
 title: setuptools + Tornado + Sqlalchemy环境搭建
-category: 语言 
+category: 环境 
 tags: setuptools tornado sqlalchemy
 ---
 

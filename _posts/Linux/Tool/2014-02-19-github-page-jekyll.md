@@ -115,3 +115,25 @@ jekyll serve  --watch --port 4000   # --watch修改后无需重启立即生效 -
 回车
 
 插入图片:图片放在`/public/upload`下，插入图片时`![xxx](/public/upload/xxx)`就可以了。
+
+转义：Markdown支持以下特殊字符的转义操作：
+```
+\   反斜线
+`   反引号
+*   星号
+_   底线
+{}  花括号
+[]  方括号
+()  括弧
+<>  尖括号
+#   井字号
++   加号
+-   减号
+.   英文句点
+!   惊叹号
+```
+
+<pre>dfasdfasdfa</pre>
+<code>
+dfasdfasdfa
+</code>
