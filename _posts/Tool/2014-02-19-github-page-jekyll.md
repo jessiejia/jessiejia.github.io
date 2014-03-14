@@ -28,7 +28,7 @@ git clone https://github.com/jolestar/jolestar.github.com
 ```
 #### jekyll - 启动(也可以在_config.yml设置)：
 ```
-jekyll serve  --watch --port 4000   # --watch修改后无需重启立即生效 --port 指定端口
+jekyll serve  --watch --port 4000 --safe --trace  # --watch修改后无需重启立即生效 --port 指定端口
 ```
 [更多>>](http://jekyllrb.com/docs/configuration/)
 
@@ -133,7 +133,3 @@ _   底线
 !   惊叹号
 ```
 
-<pre>dfasdfasdfa</pre>
-<code>
-dfasdfasdfa
-</code>
