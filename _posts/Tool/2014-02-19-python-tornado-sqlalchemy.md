@@ -104,9 +104,6 @@ tornado-3.0.1-py2.7.egg-info
         self.session.execute('show variables')``` 
 
 ##### tornado.template传参
-* 常见方法：```self.render("list.html",user_name=user_name, user_info=self.user_info);  {{user_name}}```
-* 直接调用handler中的变量: ```{{handler.user_name}}```
-* 检查某参数是否传递过来，try..catch... 
 
 
 
