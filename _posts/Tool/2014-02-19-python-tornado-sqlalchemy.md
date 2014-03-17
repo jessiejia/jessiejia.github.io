@@ -104,6 +104,9 @@ tornado-3.0.1-py2.7.egg-info
         self.session.execute('show variables')``` 
 
 ##### tornado.template传参
+* 常见方法：```{%raw%}self.render("list.html",user_name=user_name, user_info=self.user_info);  {{user_name}}{%endraw%}```
+* 直接调用handler中的变量: ```{%raw%}{{handler.user_name}}{%endraw%}```
+* 检查某参数是否传递过来，try..catch... ```{%raw%}{% try %}{% if num %}XXX{%end%}{%except%}YYY{%end%}{%endraw%}```
 
 
 
