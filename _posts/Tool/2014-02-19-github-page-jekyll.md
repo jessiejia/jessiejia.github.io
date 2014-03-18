@@ -51,6 +51,12 @@ jekyll serve  --watch --port 4000 --safe --trace  # --watch修改后无需重启
     <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
     <a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
 ```
+
+#### 遇到的问题
+* Configuration file: none 并且生成的_site文件被放到_posts下
+** 结果：因为在_posts文件夹下启动jekyll，导致找不到_config.yml
+
+
 #### jekyll本地ok，推到github没生效
 * 网上说“github的jekll0.11.0, liquid2.2.2”,我本地jekll1.4.3、liquid2.6.1，所以会遇到本地ok推上去挂掉的现象；
 * 最终发现导致的原因{%raw%}`{{`和`{%`是liquid中的特殊用途[Liquid](https://github.com/Shopify/liquid/wiki/Liquid-for-Designers).最终解决`{%raw%}{{{%endraw%}`{%endraw%}

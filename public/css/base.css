@@ -1,5 +1,5 @@
 h2 {margin-top: 0px;}
-
+h5 {font-weight: bold;}
 .container {
   width: 100%;
   height:100%;
@@ -9,6 +9,8 @@ body,html{
   height:100%;
   overflow:hidden;
   background-color: #1f2c39;
+  color:#444;
+  font-family: Georgia,Times,"Times New Roman",serif,"Helvetica Neue",Helvetica,Arial,sans-serif;
 }
 .row{
   height:100%;
@@ -65,7 +67,7 @@ body,html{
 }
 #content {font-size:14px;line-height:1.8;}
 #content h2,h3{line-height: 2;}
-blockquote p{font-size:20px;}
+blockquote p{font-size:14px;color: gray;line-height: 25px;font-weight: bold;}
 .center {text-align: center;}
 .nav-pills>li.active>a,
 .nav-pills>li.active>a:hover,
