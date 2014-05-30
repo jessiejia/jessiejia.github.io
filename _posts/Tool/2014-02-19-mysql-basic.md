@@ -5,6 +5,10 @@ category: 语言
 tags: mysql
 ---
 
+### 打印所有库和表
+    use information_schema;select table_schema,table_name from tables;
+
+
 ### 权限
 ```
 mysql> show grants for solrcloud_log_db;
@@ -15,6 +19,7 @@ mysql> show grants for solrcloud_log_db;
 | GRANT ALL PRIVILEGES ON `solrcloud_log_db`.* TO 'solrcloud_log_db'@'%'                                         | 
 +----------------------------------------------------------------------------------------------------------------+
 ```
+
 ### 字符集
 ##### 默认安装后为latin1,要手工设置为utf8 查看当前客户端的字符集mysql --help;
 ```
@@ -114,7 +119,8 @@ SELECT * FROM table WHERE name REGEXP '^.{5}$'; #正则
 
 ```
 
-##### Mysql
+##### Alter table 
+[ALTER TABLE运行时会对原表进行临时复制，在副本上进行更改，然后删除原表，再对新表进行重命名。在执行ALTER TABLE时，其它用户可以阅读原表，但是对表的更新和修改的操作将被延迟，直到新表生成为止。新表生成后，这些更新和修改信息会自动转移到新表上。RENAME除外](http://dev.mysql.com/doc/refman/5.1/zh/sql-syntax.html)
 
 
 
@@ -373,4 +379,164 @@ mysql> explain select * from people where zipcode=230031;
 ##### 链接
 博主的一套都写得很好[T-SQL查询进阶--理解SQL Server中索引原理](http://www.cnblogs.com/CareySon/archive/2011/12/22/2297568.html)
 
+
+
+
+
+
+
+
+
+
+
+
+#### sql
+##### sql语句整理
+* db中所有表的最后更新时间
+mysql> select CREATE_TIME,UPDATE_TIME, TABLE_NAME from information_schema.TABLES where TABLE_SCHEMA='my_db' and TABLE_NAME like '%_hudong%'  order by UPDAT    E_TIME desc limit 30;
+        +---------------------+---------------------+----------------------------------------+
+        | CREATE_TIME         | UPDATE_TIME         | TABLE_NAME                             |
+        +---------------------+---------------------+----------------------------------------+
+        | 2013-01-05 11:20:22 | 2014-05-06 13:47:16 | loupan_hudong_post_display_time        |
+        | 2012-10-25 16:45:02 | 2014-05-06 10:24:51 | loupan_hudong_manage_log          
+        | 2012-10-25 16:42:43 | 2014-05-06 00:04:09 | loupan_hudong_blacklist_user           |
+
+* 时间戳格式化
+mysql> select *,FROM_UNIXTIME(end_date,'%Y-%m-%d') from XX
+
+
+
+
+##### sql优化实例
+
+共243213534条数据
+
+```
+CREATE TABLE `page_stat_hourly` (
+  `hour_index` int(10) unsigned NOT NULL DEFAULT '0' COMMENT 'Ã¿Ê±',
+  `city_id` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '³ÇÊÐID',
+  `class_id` smallint(5) unsigned NOT NULL DEFAULT '0' COMMENT 'ÒµÎñÀà±ðID',
+  `item_id` int(10) unsigned NOT NULL DEFAULT '0' COMMENT 'µ¥Ò³ID',
+  `pv` int(10) unsigned NOT NULL DEFAULT '0',
+  `uv` int(10) unsigned NOT NULL DEFAULT '0',
+  `last_update` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT 'ÏµÍ³¸üÐÂÊ±¼ä',
+  PRIMARY KEY (`hour_index`,`city_id`,`class_id`,`item_id`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 COMMENT='Ã¿Ê±µ¥Ò³PV/UV±í'
+
+```
+
+* explian
+```
+mysql> explain SELECT hour_index, item_id loupan_id, SUM(pv) pv FROM aifang_dw.page_stat_hourly 
+    -> WHERE class_id IN (13,14) 
+    -> AND hour_index>=2014010110 AND hour_index<=2014010310
+    -> AND item_id IN (240524,243937) GROUP BY item_id, hour_index;
++----+-------------+------------------+-------+---------------+---------+---------+------+--------+----------------------------------------------+
+| id | select_type | table            | type  | possible_keys | key     | key_len | ref  | rows   | Extra                                        |
++----+-------------+------------------+-------+---------------+---------+---------+------+--------+----------------------------------------------+
+|  1 | SIMPLE      | page_stat_hourly | range | PRIMARY       | PRIMARY | 4       | NULL | 265831 | Using where; Using temporary; Using filesort |
++----+-------------+------------------+-------+---------------+---------+---------+------+--------+----------------------------------------------+
+1 row in set (0.00 sec)
+
+```
+
+
+
+
+
+* show profile 语句使用的资源
+```
+mysql> set profiling = 1;
+Query OK, 0 rows affected (0.01 sec)//打开profile只在本会话内有效
+
+mysql> show profiles;
+Empty set (0.01 sec)
+
+mysql> SELECT hour_index, item_id loupan_id, SUM(pv) pv FROM aifang_dw.page_stat_hourly 
+    -> WHERE class_id IN (13,14) 
+    -> AND hour_index>=2014010110 AND hour_index<=2014010310
+    -> AND item_id IN (240524,243937) GROUP BY item_id, hour_index;
+Empty set (2.04 sec)
+
+mysql> show profiles;
++----------+------------+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| Query_ID | Duration   | Query                                                                                                                                                                                                                          |
++----------+------------+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+|        1 | 2.02570000 | SELECT hour_index, item_id loupan_id, SUM(pv) pv FROM aifang_dw.page_stat_hourly 
+WHERE class_id IN (13,14) 
+AND hour_index>=2014010110 AND hour_index<=2014010310
+AND item_id IN (240524,243937) GROUP BY item_id, hour_index |
++----------+------------+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+1 row in set (0.01 sec)
+
+mysql> show profile for Query 1;
++--------------------------------+----------+
+| Status                         | Duration |
++--------------------------------+----------+
+| starting                       | 0.000033 |
+| checking query cache for query | 0.000068 |
+| Opening tables                 | 0.000012 |
+| System lock                    | 0.000009 |
+| Table lock                     | 0.000028 |
+| init                           | 0.000029 |
+| optimizing                     | 0.000015 |
+| statistics                     | 0.200135 |
+| preparing                      | 0.000048 |
+| Creating tmp table             | 0.000043 |
+| executing                      | 0.000006 |
+| Copying to tmp table           | 1.824958 |
+| Sorting result                 | 0.000038 |
+| Sending data                   | 0.000014 |
+| end                            | 0.000005 |
+| removing tmp table             | 0.000167 |
+| end                            | 0.000006 |
+| query end                      | 0.000005 |
+| freeing items                  | 0.000033 |
+| storing result in query cache  | 0.000007 |
+| logging slow query             | 0.000004 |
+| logging slow query             | 0.000031 |
+| cleaning up                    | 0.000006 |
++--------------------------------+----------+
+23 rows in set (0.01 sec)
+
+mysql> SET @query_id = 1;
+Query OK, 0 rows affected (0.01 sec)
+
+mysql> SELECT STATE,SUM(DURATION) AS Total_R,
+    ->     ROUND(100*SUM(DURATION)/(SELECT SUM(DURATION) FROM INFORMATION_SCHEMA.PROFILING
+    ->     WHERE QUERY_ID = @query_id),2) AS Pct_R,
+    ->     COUNT(*) AS Calls,
+    ->     SUM(DURATION)/COUNT(*) AS "R/Call"
+    -> FROM INFORMATION_SCHEMA.PROFILING
+    -> WHERE QUERY_ID = @query_id
+    -> GROUP BY STATE
+    -> ORDER BY Total_R DESC;
++--------------------------------+----------+-------+-------+--------------+
+| STATE                          | Total_R  | Pct_R | Calls | R/Call       |
++--------------------------------+----------+-------+-------+--------------+
+| Copying to tmp table           | 1.824958 | 90.09 |     1 | 1.8249580000 |
+| statistics                     | 0.200135 |  9.88 |     1 | 0.2001350000 |
+| removing tmp table             | 0.000167 |  0.01 |     1 | 0.0001670000 |
+| checking query cache for query | 0.000068 |  0.00 |     1 | 0.0000680000 |
+| preparing                      | 0.000048 |  0.00 |     1 | 0.0000480000 |
+| Creating tmp table             | 0.000043 |  0.00 |     1 | 0.0000430000 |
+| Sorting result                 | 0.000038 |  0.00 |     1 | 0.0000380000 |
+| logging slow query             | 0.000035 |  0.00 |     2 | 0.0000175000 |
+| freeing items                  | 0.000033 |  0.00 |     1 | 0.0000330000 |
+| starting                       | 0.000033 |  0.00 |     1 | 0.0000330000 |
+| init                           | 0.000029 |  0.00 |     1 | 0.0000290000 |
+| Table lock                     | 0.000028 |  0.00 |     1 | 0.0000280000 |
+| optimizing                     | 0.000015 |  0.00 |     1 | 0.0000150000 |
+| Sending data                   | 0.000014 |  0.00 |     1 | 0.0000140000 |
+| Opening tables                 | 0.000012 |  0.00 |     1 | 0.0000120000 |
+| end                            | 0.000011 |  0.00 |     2 | 0.0000055000 |
+| System lock                    | 0.000009 |  0.00 |     1 | 0.0000090000 |
+| storing result in query cache  | 0.000007 |  0.00 |     1 | 0.0000070000 |
+| cleaning up                    | 0.000006 |  0.00 |     1 | 0.0000060000 |
+| executing                      | 0.000006 |  0.00 |     1 | 0.0000060000 |
+| query end                      | 0.000005 |  0.00 |     1 | 0.0000050000 |
++--------------------------------+----------+-------+-------+--------------+
+21 rows in set (0.02 sec)
+
+```
 
