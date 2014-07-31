@@ -17,7 +17,15 @@ tags: Jekyll github-page
 
 需要注意各软件的版本哦<https://pages.github.com/versions/>,不过现在有了[the GitHub Pages Gem](https://github.com/github/pages-gem)一切变得超简单，谢天谢地
 
-执行`bundle exec jekyll serve`就可以跑起来了`http://localhost:4000`，不过修改内容以后，需要重新启动才能看到新的效果。
+创建`vim Gemfile`
+    source 'https://rubygems.org'
+    gem 'github-pages'
+
+执行`bundle install`
+
+### 运行
+
+在项目根目录执行`bundle exec jekyll serve`就可以跑起来了，`http://localhost:4000`，不过修改内容以后，需要重新启动才能看到新的效果。
 
 ### 搭建blog
 
@@ -41,7 +49,6 @@ Jekyll的作用就是将markdown之类的文件转化成html文件。
 #### 评论模块(使用第三方的disqus)
 先得有个disqus帐号，然后[Add Disqus to your site](http://disqus.com/admin/create/),由于我使用的是github-page的博客，所以'Choose your platform'选择'Universal Code'将给你的代码帖到你的代码里,如：
 
-```
     <div id="disqus_thread"></div>
     <script type="text/javascript">
         /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
@@ -56,7 +63,6 @@ Jekyll的作用就是将markdown之类的文件转化成html文件。
     </script>
     <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
     <a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
-```
 
 #### 遇到的问题
 * Configuration file: none 并且生成的_site文件被放到_posts下
