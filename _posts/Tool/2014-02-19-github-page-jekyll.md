@@ -40,6 +40,7 @@ Jekyll的作用就是将markdown之类的文件转化成html文件。
 
 #### 评论模块(使用第三方的disqus)
 先得有个disqus帐号，然后[Add Disqus to your site](http://disqus.com/admin/create/),由于我使用的是github-page的博客，所以'Choose your platform'选择'Universal Code'将给你的代码帖到你的代码里,如：
+
 ```
     <div id="disqus_thread"></div>
     <script type="text/javascript">
