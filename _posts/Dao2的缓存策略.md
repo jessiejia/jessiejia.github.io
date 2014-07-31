@@ -1,0 +1,86 @@
+
+##  缓存长什么样
+
+主键缓存：当where中有且仅有pk时    dao_key_pk_v2_updatelog版本号_DB名_Table名_pk值
+
+$dao->find(array('id'=>array(1,2)));
+
+    得到2条memcache
+    key dao_key_pk_v2_0_daoinfo_db_house_types_1
+    value a:3:{s:2:"id";s:1:"1";s:4:"size";s:1:"0";s:9:"loupan_id";s:4:"2479";}
+    key dao_key_pk_v2_0_daoinfo_db_house_types_2
+    value a:3:{s:2:"id";s:1:"2";s:4:"size";s:1:"0";s:9:"loupan_id";s:4:"1111";}
+
+外键缓存：当where中存在外键，设置外键缓存，并且设置redis   dao_key_complex_DB名#表名#updatelog版本号#_#方法#_where_查询条件
+
+$dao->find(array('loupan_id'=>array('2479','1111'), 'size'=>0));
+
+    得到2条memcache
+    key dao_key_complex_daoinfo_db#house_types#0#_#find#_where_["find",{"size":0,"loupan_id":"2479"},"",500]
+    value a:1:{i:0;a:3:{s:2:"id";s:1:"1";s:4:"size";s:1:"0";s:9:"loupan_id";s:4:"2479";}}
+    key dao_key_complex_daoinfo_db#house_types#0#_#find#_where_["find",{"size":0,"loupan_id":"1111"},"",500]
+    value a:1:{i:0;a:3:{s:2:"id";s:1:"2";s:4:"size";s:1:"0";s:9:"loupan_id";s:4:"1111";}}
+    
+    redis得到两条
+    key dao_key_complex_daoinfo_db#house_types#0#_loupan_id_2479
+    value dao_key_complex_daoinfo_db#house_types#0#_#find#_where_["find",{"size":0,"loupan_id":"2479"},"",500]
+    key dao_key_complex_daoinfo_db#house_types#0#_loupan_id_1111
+    value dao_key_complex_daoinfo_db#house_types#0#_#find#_where_["find",{"size":0,"loupan_id":"1111"},"",500]
+
+表级缓存：其它    dao_key_simple_daoinfo_db#表名{update版本号}#查询条件
+
+$dao->find(array('id'=>array('1','2'), 'size'=>0)); 
+
+    key dao_key_simple_daoinfo_db#house_types_find{1401097052812}#[{"id":["1","2"],"size":0},[],500,0,[]]
+    value a:2:{i:0;a:3:{s:2:"id";s:1:"1";s:4:"size";s:1:"0";s:9:"loupan_id";s:4:"2479";}i:1;a:3:{s:2:"id";s:1:"2";s:4:"size";s:1:"0";s:9:"loupan_id";s:4:"1111";}}
+
+##  update时发生什么
+
+id |     loupan_id  |    size
+---|----------------|----------
+1  |     2479       |      0
+2  |     1111       |      0
+3  |     7777       |      0
+
+#### 表级缓存失效：
+
+任何的增删改都会导致cache_tag的update字段变化，使表级缓存失效
+
+#### 外键缓存失效：
+
+情景1、
+
+    $where = array('id' => array(1,2),'loupan_id'=>7777); $data = array('size' => 888); 
+    $ret = $dao->update($where, $data);
+    
+* 根据主键1，2对应的条目的外键值2479，1111，删除外键redis及redis对应的memcache缓存
+
+        dao_key_complex_daoinfo_db#house_types#0#_loupan_id_2479
+        dao_key_complex_daoinfo_db#house_types#0#_loupan_id_1111
+        dao_key_complex_daoinfo_db#house_types#0#_#find#_where_["find",{...,"loupan_id":"2479"},"",500]
+        dao_key_complex_daoinfo_db#house_types#0#_#find#_where_["find",{...,"loupan_id":"1111"},"",500]
+
+* 删除where的外键缓存
+
+        dao_key_complex_daoinfo_db#house_types#0#_loupan_id_7777
+        dao_key_complex_daoinfo_db#house_types#0#_#find#_where_["find",{...,"loupan_id":"7777"},"",500]
+       
+* 如果where中有pk，删除主键缓存
+
+        dao_key_pk_v2_0_daoinfo_db_house_types_1
+        dao_key_pk_v2_0_daoinfo_db_house_types_2
+
+情景2、
+
+    $where = array('loupan_id'=>2479); $data = array('size' => 888); 
+    $ret = $dao->update($where, $data);
+
+* 根据where对应的条目的主键值1，删除主键缓存
+
+    dao_key_pk_v2_0_daoinfo_db_house_types_1
+
+* 删除where的外键缓存
+
+    dao_key_complex_daoinfo_db#house_types#0#_loupan_id_2479
+    dao_key_complex_daoinfo_db#house_types#0#_#find#_where_["find",{....,"loupan_id":"2479"},"",500]
+
