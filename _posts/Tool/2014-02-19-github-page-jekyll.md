@@ -5,12 +5,19 @@ category: 工具
 tags: Jekyll github-page
 ---
 
-### jekyll - Install
-```http://jekyllrb.com/```
-### 用github的page搭建个人主页(作为入门很详细的哦～)
-```http://pages.github.com/```
+### 创建一个gitPage 
+在github创建一个仓库，命名为jessiejia.github.io 
 
-<!--more-->
+    https://pages.github.com/
+
+### 本地搭环境
+写markdown很简单，但是如何在本地可以预览呢？需要搭建一个类似于github的环境（需要注意各软件的版本哦<https://pages.github.com/versions/>）
+
+    https://help.github.com/articles/using-jekyll-with-pages
+
+### 搭建blog
+gitPage有一定的规范，可以先去copy一个比较喜欢的bolg的仓库，先跑起来。
+
 
 #### 目录结构：
 - `_includes` 可以在模板中随时包含的文件
@@ -55,11 +62,6 @@ jekyll serve  --watch --port 4000 --safe --trace  # --watch修改后无需重启
 #### 遇到的问题
 * Configuration file: none 并且生成的_site文件被放到_posts下
 ** 结果：因为在_posts文件夹下启动jekyll，导致找不到_config.yml
-
-
-#### jekyll本地ok，推到github没生效
-* 网上说“github的jekll0.11.0, liquid2.2.2”,我本地jekll1.4.3、liquid2.6.1，所以会遇到本地ok推上去挂掉的现象；
-* 最终发现导致的原因{%raw%}`{{`和`{%`是liquid中的特殊用途[Liquid](https://github.com/Shopify/liquid/wiki/Liquid-for-Designers).最终解决`{%raw%}{{{%endraw%}`{%endraw%}
 
 
 -----------------------
