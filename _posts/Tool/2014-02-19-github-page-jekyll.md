@@ -8,37 +8,35 @@ tags: Jekyll github-page
 ### 创建一个gitPage 
 在github创建一个仓库，命名为jessiejia.github.io 
 
-    https://pages.github.com/
+```https://pages.github.com/```
 
 ### 本地搭环境
-写markdown很简单，但是如何在本地可以预览呢？需要搭建一个类似于github的环境（需要注意各软件的版本哦<https://pages.github.com/versions/>）
+写markdown很简单，但是如何在本地可以预览呢？需要搭建一个类似于github的环境
 
-    https://help.github.com/articles/using-jekyll-with-pages
+```https://help.github.com/articles/using-jekyll-with-pages```
+
+需要注意各软件的版本哦<https://pages.github.com/versions/>,不过现在有了[the GitHub Pages Gem](https://github.com/github/pages-gem)一切变得超简单，谢天谢地
+
+执行`bundle exec jekyll serve`就可以跑起来了`http://localhost:4000`，不过修改内容以后，需要重新启动才能看到新的效果。
 
 ### 搭建blog
-gitPage有一定的规范，可以先去copy一个比较喜欢的bolg的仓库，先跑起来。
 
+Jekyll的作用就是将markdown之类的文件转化成html文件。
 
-#### 目录结构：
+为了快速了解，可以先去copy一个比较喜欢的bolg的仓库，先跑起来。
+    
+    git clone https://github.com/suyan/suyan.github.io
+    git clone https://github.com/jolestar/jolestar.github.com
+
+#### Jekyll目录结构：
 - `_includes` 可以在模板中随时包含的文件
 - `_layouts` 布局文件，在博客头配置中可以选择
 - `pages` 站内固定的页面
 - `public` 公共资源，包括`js`,`css`,`img`等，还有我博客中调用的图片，我都放这里
 - `index.html` 首页，入口文件
 - `sitemap.txt` 给搜索引擎看的，如何爬取这个站
-
-
-#### 上面只是熟悉一下基础，想要更快速搭建，到网上找几个喜欢的模板，抄下来改改就好
-```
-git clone https://github.com/suyan/suyan.github.io
-git clone https://github.com/jolestar/jolestar.github.com
-```
-#### jekyll - 启动(也可以在_config.yml设置)：
-```
-jekyll serve  --watch --port 4000 --safe --trace  # --watch修改后无需重启立即生效 --port 指定端口
-```
-[更多>>](http://jekyllrb.com/docs/configuration/)
-
+- `_post` 你的一篇篇文章
+- `_site` jekyll生成的html文件
 
 #### 评论模块(使用第三方的disqus)
 先得有个disqus帐号，然后[Add Disqus to your site](http://disqus.com/admin/create/),由于我使用的是github-page的博客，所以'Choose your platform'选择'Universal Code'将给你的代码帖到你的代码里,如：
