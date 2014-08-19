@@ -17,3 +17,9 @@
 
 * 如果查询信息包含solr的特殊字符，请转义solr的特殊字符
 * 可以用SolrUtils::escapeQueryChars($yourword);//转义solr特殊字符
+
+
+#### 4、Unsuccessful query request : Response Code 0. (null)
+
+* http code为0
+* “the error code indicates that the response was empty, (as not even headers were returned). This means the connection was accepted and then closed gracefully (TCP FIN)” 
