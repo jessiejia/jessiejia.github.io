@@ -1,7 +1,7 @@
 ---
 layout: post
 title: 搜索引擎基础
-category: 工具 
+category: 搜索引擎 
 tags: lucene solr elastic
 ---
 

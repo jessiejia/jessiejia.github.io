@@ -1,3 +1,9 @@
+---
+layout: post
+title: solr历险记-facet返回数据结果样式问题 
+category: 搜索引擎
+tags: solr
+---
 
 自己curl某个solr语句
 

@@ -1,7 +1,7 @@
 ---
 layout: post
 title: python-virtualenv 
-category: Language 
+category: Python 
 tags: python
 ---
 

@@ -1,7 +1,7 @@
 ---
 layout: post
 title: php-fpm-nginx搭建 
-category: 环境
+category: PHP
 tags: php fpm nginx
 ---
 

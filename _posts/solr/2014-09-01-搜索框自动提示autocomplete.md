@@ -1,3 +1,9 @@
+---
+layout: post
+title: 搜索框自动提示autocomplete 
+category: 搜索引擎
+tags: solr
+---
 
 需求
 

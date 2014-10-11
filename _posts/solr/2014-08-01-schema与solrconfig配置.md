@@ -1,3 +1,9 @@
+---
+layout: post
+title: schema与solrconfig配置
+category: 搜索引擎
+tags: solr
+---
 
 
 

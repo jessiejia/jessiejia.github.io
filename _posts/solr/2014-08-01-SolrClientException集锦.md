@@ -1,3 +1,10 @@
+---
+layout: post
+title: SolrClientException集锦
+category: 搜索引擎
+tags: solr
+---
+
 
 
 ## 报错SolrClientException

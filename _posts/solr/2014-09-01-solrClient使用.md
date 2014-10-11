@@ -1,3 +1,9 @@
+---
+layout: post
+title: solrClient使用 
+category: 搜索引擎
+tags: solr
+---
 
 在使用solrClient的时候，可以输出solrQuery拼装完成的查询语句
 
